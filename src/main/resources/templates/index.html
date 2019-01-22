@@ -23,16 +23,16 @@
 <body>
     <div id="pgg">
 
-        <input id="cc1" name="dept" value="请选择">
-        <input id="cc2" name="dept" value="请选择"><br><br><br>
-    <!-- required="required" 条件查询的工具栏-->
-        <input id="nameId" class="easyui-textbox" data-options="prompt:'姓名'"><!--plain：是否显示搜索按钮的边框 -->
-        <input id="bir_thdaystatu" type="text" class="easyui-datebox" data-options="prompt:'开始日期'" >-<input id="bir_thdayend" type="text" class="easyui-datebox"  data-options="prompt:'结束日期'"><br><br>
-        <a href="javascript:search()" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" style="width:80px">搜索</a>
-        <br><br>
+        <!-- 条查 -->
+        <form id="query_form">
+            商品属性管理
+            <input id="class1" >
+            <input id="class2" name="queryid">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onClick="queryCondition()"
+               data-options="iconCls:'icon-search'">点击搜索</a>
+        </form>
         <!-- 新增 -->
         <a id="btn" href="/attr/toview?viewname=addArovider" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增属性管理</a>
-        <a  href="JavaScript:delAllUser()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,text:'批量删除'"></a>
     </div>
 
 
@@ -42,7 +42,9 @@
 <script type="text/javascript" th:inline="none">
     $(function(){
         initMyTable();
-        getCombobox();
+        queryClass1();//一级分类
+
+        serializeFrom2Obj();
     })
     function initMyTable(){
         $('#myTable').datagrid({
@@ -62,6 +64,16 @@
                 {field:'id',title:'id',width:'15%',align:'center'},
                 {field:'shxmMch',title:'属性名',width:'15%',align:'center'},
                 {field:'chjshj',title:'创建时间',width:'15%',align:'center'},
+                {
+                    field: 'shfqy', title: '是否启用', width: 100, align: 'center',
+                    formatter: function (value, row, index) {
+                        if (value == 1) {
+                            return "启用";//1
+                        } else {
+                            return "不启用";//2
+                        }
+                    }
+                },
                 {field:'shxmValue',title:'属性值',width:'35%',align:'center'},
                 {field:'tool',title:'操作',width:50,
                     formatter: function(value,row,index){
@@ -75,24 +87,55 @@
         });
     }
 
-    function getCombobox(){
-        $('#cc1').combobox({
-            url:"/json/class_1.js",
-            valueField:'id',
-            method:'get',
-            textField:'flmch1',
-            onSelect: function(item){
-                $('#cc2').combobox({
-                    url:'/json/class_2_'+item.id+'.js',
-                    method:'get',
-                    valueField:'id',
-                    textField:'flmch2',
-                    onSelect: function(rec){
-                        getMallAttrMsg(rec.id);
-                    },setValue:function(aa){
-                        id:aa.id;
-                    }
-                });
+    //----------------------------------------------------条查--
+
+    function queryCondition() {
+        //加载数据  直接发送一个对象
+        $('#myTable').datagrid('load', serializeFrom2Obj($("#query_form")));
+    }
+
+    //把表单转换为一个对象
+    function serializeFrom2Obj(obj) {
+        var o = {};
+        var a = obj.serializeArray();//[{name:'price',value='12'},{},{}]
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    }
+
+    //属性下拉框
+    var flag = null;
+    //一级分类
+    function queryClass1() {
+        $('#class1').combobox({
+            url: '/json/class_1.js',
+            method: 'get',
+            valueField: 'id',
+            textField: 'flmch1',
+            onSelect: function (item) {
+                queryClass2(item.id);
+
+
+            }
+        });
+    }
+    //二级分类
+    function queryClass2(id) {
+        $('#class2').combobox({
+            url: '/json/class_2_'+id+'.js',
+            method: 'get',
+            valueField: 'id',
+            textField: 'flmch2',
+            onSelect: function (item) {
+                flag = item.id;
             }
         });
     }

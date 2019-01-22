@@ -11,10 +11,8 @@ import java.util.List;
 
 public interface PropertyMapper {
 
-    @Select("select count(*) from t_mall_value ")
-    int queryListToTalCount(HashMap<String, Object> hashMap);
-
-    List<Attribute> queryListAttribute(HashMap<String, Object> hashMap);
+   // @Select("select count(*) from t_mall_value ")
+   // int queryListToTalCount(HashMap<String, Object> hashMap);
 
     @Select("select id from t_mall_attr t where shxm_mch = #{shxm_mch}")
     Integer getArrrId(String shxm_mch);
@@ -23,4 +21,5 @@ public interface PropertyMapper {
 
     void addAttr(@Param("attribute") ArrayList<Attribute> attribute);
 
+    List queryListAttribute(Attribute attribute);
 }

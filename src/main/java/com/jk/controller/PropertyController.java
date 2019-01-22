@@ -5,6 +5,7 @@ import com.jk.bean.MallAttr;
 import com.jk.service.PropertyService;
 import com.jk.utils.QueryParam;
 import com.jk.utils.ResultPage;
+import com.jk.utils.ReturnPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class PropertyController {
     */
    @RequestMapping("queryListAttribute")
    @ResponseBody
-   public ResultPage queryListAttribute(Integer rows, Integer page, Attribute attribute){
+   public ReturnPage queryListAttribute(Integer rows, Integer page, Attribute attribute){
 
       return service.queryListAttribute(rows, page,attribute);
    }

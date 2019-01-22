@@ -1,4 +1,5 @@
 package com.jk.service.impl;
+import com.github.pagehelper.PageHelper;
 import com.jk.bean.Attribute;
 import com.jk.bean.MallAttr;
 import com.jk.mapper.PropertyMapper;
@@ -6,6 +7,7 @@ import com.jk.service.PropertyService;
 import com.jk.utils.PageUtil;
 import com.jk.utils.QueryParam;
 import com.jk.utils.ResultPage;
+import com.jk.utils.ReturnPage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,18 +23,14 @@ public class PropertyServiceImpl implements PropertyService {
 
     //查询属性值
     @Override
-    public ResultPage queryListAttribute(Integer rows, Integer page, Attribute attribute) {
-        ResultPage resultPage = new ResultPage();
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("Attribute", attribute);
-        int count = mapper.queryListToTalCount(hashMap);
-        PageUtil<Attribute> pageUtil = new PageUtil<>(count, page, rows);
-        hashMap.put("start", pageUtil.getStartIndex());
-        hashMap.put("end", pageUtil.getEndIndex());
-        List<Attribute> attribute1 = mapper.queryListAttribute(hashMap);
-        resultPage.setRows(attribute1);
-        resultPage.setTotal(count);
-        return resultPage;
+    public ReturnPage queryListAttribute(Integer rows, Integer page, Attribute attribute) {
+
+        List list=mapper.queryListAttribute(attribute);
+
+        PageHelper.startPage(page,rows);
+        List listData=mapper.queryListAttribute(attribute);
+        ReturnPage returnPage=new ReturnPage(list.size(),listData);
+        return returnPage;
     }
 
     //新增属性

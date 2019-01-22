@@ -18,7 +18,8 @@ public class Attribute {
 
     private String shxmMch ;     //第一个表属性名
 
-    String shxm_mch;
-
     String shxmValue;
+
+    //临时字段
+    Integer queryid;
 }
