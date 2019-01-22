@@ -13,4 +13,5 @@ public class MallAttr {
     Integer flbh2;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     Date chjshj;
+    private Integer tempid;
 }

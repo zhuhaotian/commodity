@@ -8,4 +8,6 @@ import java.util.ArrayList;
 public class QueryParam {
 
     private ArrayList<com.jk.bean.Attribute> Attribute;
+
+
 }

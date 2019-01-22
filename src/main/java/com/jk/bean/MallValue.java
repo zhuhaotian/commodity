@@ -19,4 +19,10 @@ public class MallValue implements Serializable {
 
     private Date chjshj;
 
+
+
+
+
+
+
 }

@@ -39,14 +39,13 @@ public class PropertyServiceImpl implements PropertyService {
     public void addAttr(MallAttr arr, QueryParam param) {
         ArrayList<Attribute> attribute = param.getAttribute();
         Integer shxm_id=null;
-        if(arr.getShxm_mch()!=null){
+
             shxm_id=mapper.getArrrId(arr.getShxm_mch());
             if(shxm_id==null){
-                mapper.addMallAttr(arr.getShxm_mch());
-                shxm_id=mapper.getArrrId(arr.getShxm_mch());
+                mapper.addMallAttr(arr);
+                shxm_id=arr.getTempid();
                 System.out.println(shxm_id);
             }
-        }
         for (Attribute attribute1 : attribute) {
             attribute1.setShxm_id(shxm_id);
         }

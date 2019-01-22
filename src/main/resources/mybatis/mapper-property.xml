@@ -7,8 +7,11 @@
       select * from t_mall_value limit #{start},#{end}
     </select>
 
-    <insert id="addMallAttr" parameterType="com.jk.bean.MallAttr" keyProperty="id" useGeneratedKeys="true">
-      insert into t_mall_attr (shxm_mch,shfqy,flbh2) value (#{shxm_mch},'1',54)
+    <insert id="addMallAttr">
+      insert into t_mall_attr (shxm_mch,shfqy,flbh2) value (#{shxm_mch},'1',33)
+      <selectKey  resultType="int" keyProperty="tempid" order="AFTER" >
+          SELECT LAST_INSERT_ID()
+      </selectKey>
     </insert>
     <!--void addAttr(ArrayList<Attribute> attribute);-->
     <insert id="addAttr">
