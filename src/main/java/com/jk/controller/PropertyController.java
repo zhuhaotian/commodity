@@ -20,6 +20,11 @@ public class PropertyController {
    @Autowired
    private PropertyService service;
 
+   @RequestMapping("toIndex")
+   public String toIndex(){
+      return "index";
+   }
+
    //跳转到页面的方法
    @RequestMapping("toview")
    public String toView(String viewname){
