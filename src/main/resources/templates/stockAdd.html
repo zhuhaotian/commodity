@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script th:src="@{~/common/myJs.jsp}"></script>
+</head>
+<body>
+    <form>
+        <input type="text" id="queryClass1"   class="easyui-combobox" />-
+        <input type="text" id="queryClass2"  class="easyui-combobox" />-
+        <input type="text" id="queryTradeMark"  class="easyui-combobox" />-
+        <input type="text" id="queryProduct" name="shp_id" class="easyui-combobox" /><br/>
+        属性列表页
+        <div id="shuxing"></div><br/>
+        属性列表页
+        <div id="shuxingz"></div><br/>
+        名称:<input type="text" name="sku_mch" class="easyui-textbox"/><br/>
+        价格:<input type="text" name="jg" class="easyui-textbox"/><br/>
+        库存:<input type="text" name="kc" class="easyui-textbox"/><br/>
+        库存地址:<input type="text" name="kcdz" class="easyui-textbox"/>
+    </form>
+    <a  onclick="add()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增 </a>
+</body>
+<script>
+    $(function(){
+        queryClass();
+    })
+    function add(){
+        $.ajax({
+            url:"/stock/addSku",
+            data:$("form").serialize(),
+            success:function(result){
+                if (result==1) {
+                    alert("新增成功");
+                    //location.reload();
+                }
+            },
+            error:function(){
+                alert("ajax访问失败了,查看控制台");
+            }
+        });
+    }
+    function queryClass(){
+        $('#queryClass1').combobox({
+            url:'/stock/queryClass1',
+            textField:'flmch1',
+            valueField:'id',
+            onSelect: function(rec){
+                $('#queryClass2').combobox({
+                    url:'/stock/getClass2ByFlbh1?id='+rec.id,
+                    textField:'flmch2',
+                    valueField:'id',
+                    onSelect: function(rec){
+                        $.ajax({
+                            url:"/stock/getAttrByFlbh2",
+                            data:{id:rec.id},
+                            success:function(result){
+                                var content = "";
+                                $.each(result,function(index,obj){
+                                    content+="<input type='checkbox'onclick='getChecked(this)' name='attrVal[" + index + "].shxmId' value='"+obj.id+"'/>"+obj.shxm_mch+"";
+                                });
+                                $("#shuxing").html(content);
+                            },
+                            error:function(){
+                                alert("ajax访问失败了,查看控制台");
+                            }
+                        });
+                        $('#queryTradeMark').combobox({
+                            url:'/stock/getTradeMarkById?id='+rec.flbh1,
+                            textField:'ppmch',
+                            valueField:'id',
+                            onSelect: function(rec){
+                                $('#queryProduct').combobox({
+                                    url:'/stock/getProductById?id='+rec.id,
+                                    valueField:'id',
+                                    textField:'shp_mch'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+    var indexGloal = -1;
+    function getChecked(check){
+        indexGloal++;
+        if (check.checked) {
+            var count = $(check).val();
+            $.ajax({
+                url:"/stock/getSkuAttrValueById",
+                data:{id:count},
+                success:function(result){
+                    var shuxingz="";
+                    shuxingz+="<div id='sxmid_"+check.value+"'>"
+                    $.each(result,function(index,obj){
+                        shuxingz+="<input name='attrVal[" + indexGloal + "].shxzhId' type='radio' value='"+obj.id+"'/>" + obj.shxzh + "-" + obj.shxzh_mch;
+                    });
+                    shuxingz+="</div></br>"
+                    $("#shuxingz").append(shuxingz)
+                },
+                error:function(){
+                    alert("ajax访问失败了,查看控制台");
+                }
+            })
+        }else{
+            $("#sxmid_" + check.value).remove();
+        }
+    }
+</script>
+</html>

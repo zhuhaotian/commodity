@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script th:src="@{~/common/myJs.jsp}"></script>
+</head>
+<body>
+<!-- 查询显示的表格 -->
+<a  onclick="toAdd()" id="div-button" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
+<table id="dg"></table>
+
+<script type="text/javascript" th:inline="none">
+
+    $(function (){
+        initDategrid();
+
+    })
+    function toAdd(){
+        window.location.href="/stock/toStockAdd";
+    }
+    //查询  分页
+    function initDategrid(){
+
+        $('#dg').datagrid({
+            url:"/stock/queryStock",
+            fit:true,
+            toolbar:'#div-button',
+            pagination:true,
+            pageNumber:1,
+            pageSize:5,
+            pageList:[3,5,10,20,50],
+            // rownumbers:true,
+            striped:true,
+            columns:[[
+
+                {field:'sku_mch',title:'loansId',align:'center'},
+                {field:'sku_xl',title:'loansName',width:'100',align:'center'},
+                {field:'kcdz',title:'kcdz',width:'100',align:'center'},
+                {field:'shxzh',title:'shxzh',width:'100',align:'center'},
+                {field:'shxm_mch',title:'loanStatus',width:'100',align:'center'},
+
+                {field:'shp_mch',title:'loansDate',width:'100',align:'center'},
+                {field:'flmch1',title:'loansDate',width:'100',align:'center'},
+                {field:'flmch2',title:'loansDate',width:'100',align:'center'},
+
+                {field:'xxx',title:'操作',width:'240',align:'center',
+
+                    formatter: function(value,row,index){
+
+                    }
+                },
+            ]]
+        })
+    }
+</script>
+</body>
+
+</html>

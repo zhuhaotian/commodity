@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.StockMapper">
+    <select id="queryClass1" resultType="class1">
+        select * from t_mall_class_1
+    </select>
+
+    <select id="getClass2ByFlbh1" resultType="class2" parameterType="int">
+        select * from t_mall_class_2 where flbh1 = #{id}
+    </select>
+
+    <select id="getTradeMarkById" resultType="tradeMark" parameterType="int">
+      select ttm.* from t_mall_tm_class ttc,t_mall_trade_mark ttm where ttc.pp_id=ttm.Id and ttc.flbh1 = #{id}
+    </select>
+
+    <select id="getProductById" resultType="product" parameterType="int">
+        select * from t_mall_product where pp_id = #{id}
+    </select>
+
+    <select id="getAttrByFlbh2" resultType="attr" parameterType="int">
+        select * from t_mall_attr where flbh2 = #{id}
+    </select>
+
+    <insert id="addSku" parameterType="com.jk.bean.CopySku">
+        insert into t_mall_sku
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="shp_id != null" >
+                shp_id,
+            </if>
+            <if test="kc != null" >
+                kc,
+            </if>
+            <if test="jg != null" >
+                jg,
+            </if>
+            <if test="chjshj != null" >
+                chjshj,
+            </if>
+            <if test="sku_mch != null" >
+                sku_mch,
+            </if>
+            <if test="sku_xl != null" >
+                sku_xl,
+            </if>
+            <if test="kcdz != null" >
+                kcdz,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="shp_id != null" >
+                #{shp_id,jdbcType=INTEGER},
+            </if>
+            <if test="kc != null" >
+                #{kc,jdbcType=INTEGER},
+            </if>
+            <if test="jg != null" >
+                #{jg,jdbcType=DOUBLE},
+            </if>
+            <if test="chjshj != null" >
+                #{chjshj,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sku_mch != null" >
+                #{sku_mch,jdbcType=VARCHAR},
+            </if>
+            <if test="sku_xl != null" >
+                #{sku_xl,jdbcType=INTEGER},
+            </if>
+            <if test="kcdz != null" >
+                #{kcdz,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        <selectKey order="AFTER" keyProperty="id" resultType="int">
+            select max(id) from t_mall_sku
+        </selectKey>
+    </insert>
+    <insert id="addStuAttrValue" parameterType="com.jk.bean.SkuAttrValue">
+        insert into t_mall_sku_attr_value
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                Id,
+            </if>
+            <if test="shxmId != null" >
+                shxm_id,
+            </if>
+            <if test="shxzhId != null" >
+                shxzh_id,
+            </if>
+            <if test="shpId != null" >
+                shp_id,
+            </if>
+            <if test="isSku != null" >
+                is_sku,
+            </if>
+            <if test="chjshj != null" >
+                chjshj,
+            </if>
+            <if test="skuId != null" >
+                sku_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="shxmId != null" >
+                #{shxmId,jdbcType=INTEGER},
+            </if>
+            <if test="shxzhId != null" >
+                #{shxzhId,jdbcType=INTEGER},
+            </if>
+            <if test="shpId != null" >
+                #{shpId,jdbcType=INTEGER},
+            </if>
+            <if test="isSku != null" >
+                #{isSku,jdbcType=VARCHAR},
+            </if>
+            <if test="chjshj != null" >
+                #{chjshj,jdbcType=TIMESTAMP},
+            </if>
+            <if test="skuId != null" >
+                #{skuId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <!-- List queryStock();-->
+    <select id="queryStock" resultType="SkuAttrValue">
+
+select tms.sku_mch sku_mch,tms.sku_xl sku_xl,tms.kcdz kcdz,tmv.shxzh shxzh,tma.shxm_mch shxm_mch,
+
+tmp.shp_mch shp_mch,tmc1.flmch1 flmch1,tmc2.flmch2 flmch2
+
+from t_mall_sku tms,t_mall_sku_attr_value tmsav,t_mall_attr tma,t_mall_value tmv,t_mall_product tmp,t_mall_class_1 tmc1,
+
+t_mall_class_2 tmc2 where  tmsav.shxm_id=tma.id and tmsav.shxzh_id=tmv.id and tmsav.shp_id =tmp.Id and tmsav.sku_id =tms.Id
+
+ and tmp.flbh1=tmc1.Id and tmp.flbh2 =tmc2.Id
+
+ </select>
+
+    <select id="getSkuAttrValueById" resultType="mallValue" parameterType="int">
+    select *,shxzh_mch shxzhMch from t_mall_value where shxm_id=#{id}
+  </select>
+</mapper>
