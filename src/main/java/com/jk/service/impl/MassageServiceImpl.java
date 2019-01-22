@@ -3,7 +3,7 @@ package com.jk.service.impl;
 import com.jk.bean.Product;
 import com.jk.mapper.MessageMapper;
 import com.jk.service.MessageService;
-import com.jk.utils.PageResult;
+import com.jk.utils.ResultPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,8 @@ public class MassageServiceImpl implements MessageService {
 
 
     @Override
-    public PageResult queryUser(Integer page, Integer rows, Product product) {
-        PageResult pageResult = new PageResult();
+    public ResultPage queryUser(Integer page, Integer rows, Product product) {
+        ResultPage pageResult = new ResultPage();
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("product", product);
         int count = messageMapper.querynameCount(hashMap);

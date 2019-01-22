@@ -7,9 +7,9 @@ import java.util.List;
  *
  * @author songxj
  */
-public class PageResult {
+public class ResultPage {
 
-    private Integer total;
+    private Integer total = 0;
 
     private List<?> rows;
 
@@ -28,6 +28,4 @@ public class PageResult {
     public void setRows(List<?> rows) {
         this.rows = rows;
     }
-
-
 }

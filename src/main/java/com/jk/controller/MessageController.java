@@ -3,7 +3,7 @@ package com.jk.controller;
 import com.jk.bean.Product;
 import com.jk.service.MessageService;
 import com.jk.utils.FileUtil;
-import com.jk.utils.PageResult;
+import com.jk.utils.ResultPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MessageController {
+
     @Autowired
     private MessageService messageService;
     //跳转页面
@@ -34,7 +35,7 @@ public class MessageController {
     //分页
     @RequestMapping("empQuery")
     @ResponseBody
-    public PageResult queryUser(Integer page, Integer rows, Product product){
+    public ResultPage queryUser(Integer page, Integer rows, Product product){
         return messageService.queryUser(page,rows,product);
     }
 

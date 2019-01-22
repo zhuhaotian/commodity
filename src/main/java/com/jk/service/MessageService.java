@@ -1,12 +1,12 @@
 package com.jk.service;
 
 import com.jk.bean.Product;
-import com.jk.utils.PageResult;
+import com.jk.utils.ResultPage;
 
 public interface MessageService {
 
 
-    PageResult queryUser(Integer page, Integer rows, Product product);
+    ResultPage queryUser(Integer page, Integer rows, Product product);
 
     void removeEmp(Integer id);
 

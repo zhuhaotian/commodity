@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript">
+        var i=0;
+        function addline(){
+            var count="";
+            count+="<tr id='is"+i+"'>"
+            count+="<td>属性值:<input name='Attribute["+i+"].shxzh' /></td>"
+            count+="<td>单位:<input name='Attribute["+i+"].shxzh_mch' /></td>"
+            count+="<td><input type='button' onclick='deleteLine("+i+")'value='删除'></td>"
+            count+="</tr>"
+            i++;
+            $("table").append(count)
+        }
+        function deleteLine(i){
+            $("#is"+i+"").remove()
+        }
+        function addAttr() {
+            $.ajax({
+                url:"/attr/addAttr",
+                type:"POST",
+                data:$("form").serialize(),
+                success:function(pageUtil){
+
+                },
+                error:function(){
+                    alert("失败了");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<form id="form">
+    <table border="1">
+        <tr>
+            <td>属性名:<input name='shxm_mch' /></td>
+            <td></td>
+            <td><a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addline()" data-options="iconCls:'icon-add'">增加值</a></td>
+        </tr>
+    </table>
+</form>
+<input type="button" value="提交" onclick="addAttr()">
+</body>
+</html>

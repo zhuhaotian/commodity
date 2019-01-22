@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.PropertyMapper">
+
+    <!--查询-->
+    <select id="queryListAttribute" parameterType="map" resultType="com.jk.bean.Attribute">
+      select * from t_mall_value limit #{start},#{end}
+    </select>
+
+    <insert id="addMallAttr" parameterType="com.jk.bean.MallAttr" keyProperty="id" useGeneratedKeys="true">
+      insert into t_mall_attr (shxm_mch,shfqy,flbh2) value (#{shxm_mch},'1',54)
+    </insert>
+    <!--void addAttr(ArrayList<Attribute> attribute);-->
+    <insert id="addAttr">
+        insert into t_mall_value (shxzh,shfqy,shxm_id,shxzh_mch)VALUES
+        <foreach item="item" index="index" separator="," collection="attribute"> (#{item.shxzh},'1',#{item.shxm_id},#{item.shxzh_mch}) </foreach>
+    </insert>
+</mapper>
