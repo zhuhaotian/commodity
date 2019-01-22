@@ -4,7 +4,17 @@
 
     <!--查询-->
     <select id="queryListAttribute" parameterType="map" resultType="com.jk.bean.Attribute">
-      select * from t_mall_value limit #{start},#{end}
+     SELECT
+      t1.Id id,
+      t1.shxm_mch shxmMch,
+      t1.chjshj,
+      GROUP_CONCAT(t2.shxzh, t2.shxzh_mch) shxmValue
+      FROM
+      t_mall_attr t1
+      LEFT JOIN t_mall_value t2 ON t1.Id = t2.shxm_id
+      GROUP BY
+      t1.Id
+      limit #{start},#{end}
     </select>
 
     <insert id="addMallAttr" parameterType="com.jk.bean.MallAttr" keyProperty="id" useGeneratedKeys="true">
