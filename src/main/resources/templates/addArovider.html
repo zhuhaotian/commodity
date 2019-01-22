@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+
+    <script src="/jscn/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript">
         var i=0;
         function addline(){
@@ -33,6 +34,7 @@
             });
         }
     </script>
+
 </head>
 <body>
 <form id="form">
@@ -41,6 +43,11 @@
             <td>属性名:<input name='shxm_mch' /></td>
             <td></td>
             <td><a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addline()" data-options="iconCls:'icon-add'">增加值</a></td>
+        </tr>
+        <tr>
+            <td>属性值:<input name='Attribute[0].shxzh' /></td>
+            <td>单位:<input name='Attribute[0].shxzh_mch' /></td>
+            <td><input type='button' onclick='deleteLine(0)'value='删除'></td>
         </tr>
     </table>
 </form>

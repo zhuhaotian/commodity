@@ -13,6 +13,8 @@
     <!--void addAttr(ArrayList<Attribute> attribute);-->
     <insert id="addAttr">
         insert into t_mall_value (shxzh,shfqy,shxm_id,shxzh_mch)VALUES
-        <foreach item="item" index="index" separator="," collection="attribute"> (#{item.shxzh},'1',#{item.shxm_id},#{item.shxzh_mch}) </foreach>
+        <foreach item="item" index="index" separator="," collection="attribute">
+         (#{item.shxzh},'1',#{item.shxm_id},#{item.shxzh_mch})
+         </foreach>
     </insert>
 </mapper>
