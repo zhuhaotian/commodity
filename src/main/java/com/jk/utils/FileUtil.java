@@ -47,7 +47,7 @@ public class FileUtil {
 			//创建目标目录
 			targetFile.mkdirs();
 		}
-		
+
 		try {
 			// 使用transferTo（dest）方法将上传文件写到服务器上指定的文件。
 			file.transferTo(targetFile);

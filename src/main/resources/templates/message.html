@@ -47,10 +47,11 @@
     </tr>
     <tr>
         <td>商品图片：</td>
-        <td><input name="shp_tp"  id="hideImg" type="text" >
-            <img id="testimg" width="100"> <!-- 上传完显示的图片  -->
+        <td>
             <div id="fileQueue"></div><!--文件上传的进度条  -->
-            <input id="uploadify" type="file" > <br/>
+            <input id="uploadify" type="file"> <br/>
+            <div id="imgone">
+            </div>
         </td>
     </tr>
     <tr>
@@ -96,10 +97,12 @@ $('#cc').combobox({
     });
 
 
+    var tp2 = "";
+    var num = 1;
     function preFile(){
         //上传插件
         $("#uploadify").uploadify({
-            //插件自带  不可忽略的参数
+            //插件自带  不可d忽略的参数
             'swf': '/js/uploadify/uploadify.swf',
             //前台请求后台的url 不可忽略的参数                          //*****要修改路经 !!!!!!!!!!!!!!!!!!!!!!!!
             'uploader': '/toUploadBlog',
@@ -112,7 +115,7 @@ $('#cc').combobox({
             //设置文件是否自动上传
             'auto': true,
             //可以同时选择多个文件 默认为true  不可忽略
-            'multi': false,
+            'multi': true,
             //上传后队列是否消失
             'removeCompleted': true,
             //队列消失时间
@@ -127,12 +130,18 @@ $('#cc').combobox({
             //成功回调函数 file：文件对象。data后台输出数据
             'onUploadSuccess':function(file,data,response){
               //  for (data)
-                var imgurl =data
+/*                var imgurl =data
                 alert(data);
                 //给img框赋值进行展示
                 $("#testimg").attr("src",data);
                 //给隐藏的文本框赋值 传到后台
-                $('#hideImg').val(data); //改!!!!!!!!!!11111
+                $('#hideImg').val(data); //改!!!!!!!!!!11111*/
+                var tp = "";
+                tp+=' <input name="shp_tp" id="hideImg'+num+'" value="'+data+'" type="text" >';
+                tp+='<img id="testimg'+num+'" src="'+data+'" width="50px" height="50px">' ;
+                $("#imgone").append(tp+"<br/>");
+                tp2+=("#imgone").html();
+                num++;
             }
         });
     }

@@ -36,5 +36,6 @@ public class TreeController {
     public List<Tree> list(Tree vo){
         vo.setPid(vo.getId());
         return treeService.list(vo);
+
     }
 }

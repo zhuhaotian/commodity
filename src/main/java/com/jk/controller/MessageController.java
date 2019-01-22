@@ -97,6 +97,7 @@ public class MessageController {
     public String addgood(Product Product){
         System.out.println(Product);
         messageService.addgood(Product);
+
         return "1";
     }
     //新增图片
