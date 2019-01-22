@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/jdbc">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/jscn/js/jquery-2.1.1.min.js"></script>
+    <!-- 引入EasyUI的样式文件-->
+    <link rel="stylesheet" href="/jscn/easyui/themes/default/easyui.css" type="text/css"/>
+    <!-- 引入EasyUI的图标样式文件-->
+    <link rel="stylesheet"href="/jscn/easyui/themes/icon.css" type="text/css"/>
+    <!-- 引入JQuery -->
+    <script src="/jscn/easyui/jquery.min.js"></script>
+    <!-- 引入EasyUI -->
+    <script src="/jscn/easyui/jquery.easyui.min.js"></script>
+    <!-- 引入EasyUI的中文国际化js，让EasyUI支持中文 -->
+    <script src="/jscn/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <!-- 引入EasyUI的生成树的插件 -->
+    <script src="/jscn/easyui/util-js.js"></script>
+    <!-- uploadify上传文件插件 -->
+    <link rel="stylesheet" href="/jscn/uploadify/uploadify.css" type="text/css">
+    <script charset="utf-8" src="/jscn/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+
+<div id="dd" class="easyui-dialog" data-options="closed:true">
+    <form id="formid" method="post">
+        <input type="hidden" name="id" id="eid" />
+        <table>
+            <tr>
+                <th>商品名称</th>
+                <td><input type="text" name="shp_mch" class="easyui-validatebox"  data-options="prompt:'商品名称',required:true,validType:'validEmpName'"></td>
+            </tr>
+            <tr>
+                <th>商品图片</th>
+                <td>
+                    <input type="hidden" name="shp_tp" id="imgId" />
+                    <input type="file" id="imgFileBTN" />
+                    <div id="showImgDiv" style="width: 80px;height: 100px;border-style:solid;border-width:1px; border-color:black;">
+                        <img src="" id="showImg" style="width: 80px;height: 100px;">
+                    </div>
+                    <div id="showBars" ></div>
+                </td>
+            </tr>
+            <tr>
+                <th>分类编号1</th>
+                <td><input type="text" name="flbh1" class="easyui-validatebox"  data-options="prompt:'分类编号1',required:true,validType:'validEmpName'"></td>
+            </tr>
+            <tr>
+                <th>分类编号2</th>
+                <td><input type="text" name="flbh2" class="easyui-validatebox"  data-options="prompt:'分类编号2',required:true,validType:'validEmpName'"></td>
+            </tr>
+            <tr>
+                <th>品牌id</th>
+                <td><input type="text" name="pp_id" class="easyui-validatebox"  data-options="prompt:'品牌id',required:true,validType:'validEmpName'"></td>
+            </tr>
+            <tr>
+                <th>创建时间</th>
+                <td>
+                    <input name="chjshj" type="text" class="easyui-datebox" required="true">
+                </td>
+            </tr>
+            <tr>
+                <th>商品描述</th>shp_msh
+                <td><textarea name="shp_msh" class="easyui-validatebox"></textarea></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+    <!-- required="required" 条件查询的工具栏-->
+    <div id="divid">
+        <input id="nameId" class="easyui-textbox" data-options="prompt:'姓名'">			  <!--plain：是否显示搜索按钮的边框 -->
+        <input id="bir_thdaystatu" type="text" class="easyui-datebox" data-options="prompt:'开始日期'" >-<input id="bir_thdayend" type="text" class="easyui-datebox"  data-options="prompt:'结束日期'">
+        <a href="javascript:search()" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" style="width:80px">搜索</a>
+        <!-- 新增 -->
+        <br>
+        <a  href="JavaScript:delAllUser()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,text:'批量删除'"></a>
+    </div>
+
+    <table id="dg"></table>
+</body>
+<script th:inline="none">
+    $(function(){
+        queryUserList();
+    })
+
+    function queryUserList(){
+        //数据展示  分页
+        $('#dg').datagrid({
+            url:'/empQuery',//请求后台json数据路径
+            fit:true,//适应父容器
+            fitColumns:true,//自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动
+            striped:true,
+            loadMsg:'请稍等...',//数据加载中提示信息
+            singleSelect:false,//只能选择一行
+            pagination:true,//当前表格使用分页工具栏（必须有）
+            pagePosition:'bottom',//分页工具显示的位置
+            pageNumber:1, //number 在设置分页属性的时候初始化页码。 1
+            pageSize:3, //number 每页条数
+            pageList:[3,5,10,15], //选择每页条数
+            toolbar:'#divid',//数据网格（datagrid）面板的头部工具栏,作为条查使用
+            columns:[[
+                {field:'Id'  	  ,title:'编号',align:'center',sortable:true,checkbox:true},
+                {field:'shp_mch'	  ,title:'商品名称',align:'center',sortable:true},
+                /* 图片 */
+                {field:'shp_tp',title:'商品图片',align:'center',sortable:true,
+                    formatter: function(value,row,index){
+                        console.info(index)
+                        return "<img src='/"+value+"' width='100px'/>";
+                    }
+                },
+                {field:'flbh1' ,title:'分类编号1',align:'center',sortable:true},
+                {field:'flbh2' ,title:'分类编号2',align:'center',sortable:true},
+                {field:'pp_id' ,title:'品牌id',align:'center',sortable:true},
+                {field:'chjshj' ,title:'创建时间',align:'center',sortable:true},
+                {field:'shp_msh',title:'商品描述',align:'left'},
+                {field:'tool',title:'操作',width:50,
+                    formatter: function(value,row,index){
+                        var str = '' +
+                            '<a href="javascript:queryUserById('+row.id+')"><img src="/jscn/easyui/themes/icons/pencil.png" /></a> | ' +
+                            '<a href="javascript:removeUser('+row.id+')"><img src="/jscn/easyui/themes/icons/cancel.png" /></a>' ;
+                        return str;
+                    }
+                }
+            ]],
+
+        });
+    }
+
+    //新增的弹框
+    // dialog弹框
+    function openDialog(text){
+        queryUserList();
+        queryRoleList();
+        $('#dd').dialog({
+            title:text+'商品',
+            width: 600,
+            height: 500,
+            closed: false,
+            resizable: true, //可以调整大小
+            cache: false,
+            modal: true,  //背景添加阴影
+            buttons: [{
+                text:text+'商品',
+                iconCls:'icon-save',
+                handler:function(){
+
+                    // 通过id来控制，执行新增还是修改的函数
+                    if($("#eid").val() != null && $("#eid").val() != ''){
+                        // 有id 走修改
+                        editEmp();
+                    } else {
+                        // 没有id 走新增
+                        addUser();
+                    }
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    $("#formid").form('reset');
+                    $("#dd").dialog('close');
+                }
+            }],
+            onClose:function(){
+                $("#formid").form('reset');
+            }
+        });
+    }
+
+
+    //删除ajax
+    function removeUser(id){
+        $.messager.confirm('提示','确定要删除这条数据吗?',function(r){
+            if (r) {
+                $.ajax({
+                    url:'/removeEmp',
+                    type:'post',
+                    data:{id:id},
+                    success:function(data){
+                        $.messager.alert('提示','删除成功');
+                        queryUserList();
+                    },
+                    error:function(){
+                        alert("删除失败");
+                    }
+                });
+            }
+        })
+    }
+
+    //批量删除
+    function delAllUser(){
+        var arrUser = $('#dg').datagrid('getChecked');
+        if (arrUser.length == 0) {
+            $.messager.alert("提示","请选择要删除的数据!");
+        }else{
+            // 定义存放id数组，前端直接往后台传入数组类型，到mybatis xml文件直接批量删除操作
+            var ids = [];
+            for ( var i in arrUser) {
+                // 将选中的每行数据遍历获取id放入数组当中
+                ids.push(arrUser[i].id);
+            }
+            $.messager.confirm('提示','你确定删除'+arrUser.length+'条记录吗?',function(r){
+                if(r){
+                    $.ajax({
+                        url:'/removeAll',
+                        type:'post',
+                        data:{id:ids},
+                        success:function(data){
+                            $.messager.alert('提示','删除成功');
+                            queryUserList();
+                        },
+                        error:function(){
+                            alert("删除失败");
+                        }
+                    })
+                }
+            });
+        }
+    }
+
+    //修改回显ajax
+    function queryUserById(id){
+        $.ajax({
+            url:'/selectQueryById',
+            type:'post',
+            data:{id:id},
+            success:function(data){
+                openDialog('修改');
+                $("#formid").form('load',data);
+                $("showImg").attr('src','/' + data.pet_photo);
+            },
+            error:function(){
+                alert("异常");
+            }
+        });
+    }
+
+
+
+    // form表单修改
+    function editEmp(){
+        $("#formid").form('submit',{
+            url:"/updeteByEmp",
+            success:function(data){
+                $.messager.alert("提示","修改成功！");
+                $("#dd").dialog('close');
+                queryUserList();
+            },
+            error:function(){
+                alert("修改异常");
+            }
+        })
+    }
+
+    $(function(){
+        //文件域的id
+        $("#imgFileBTN").uploadify({
+            //前台请求后台的url 不可忽略的参数
+            'uploader' :"/uploadNewsImg",
+            //插件自带 不可忽略的参数
+            'swf' : '/jscn/uploadify/uploadify.swf',
+            //撤销按钮的图片路径
+            'cancelImg' : '/jscn/uploadify/uploadify-cancel.png',
+            //如果为true 为自动上传 在文件后 为false 那么它就要我们自己手动点上传按钮
+            'auto' : true,
+            //可以同时选择多个文件 默认为true 不可忽略
+            'multi' : false,
+            //给上传按钮设置文字
+            'buttonText' : '上传图片',
+            //上传后队列是否消失
+            'removeCompleted' : true,
+            'removeTimeout' : 1,
+            //上传文件的个数
+            'uploadLimit' : 2,
+            'fileTypeExts' : '*.jpg;*.jpge;*.gif;*.png',
+            'fileSizeLimit' : '2MB',
+            //给div的进度条加背景 不可忽略
+            'queueID' : 'showBars',
+            // controller层方法中接收文件的参数名, 参数名为自定义
+            'fileObjName' : 'newsimg',
+            //      上传成功后的回调函数
+            'onUploadSuccess' : function(file, data, response) {
+                data = data.replace("\"","").replace("\"","");
+                $("#showImg").attr("src","/"+data);
+                $("#imgId").val(data)
+            }
+
+        });
+    });
+</script>
+</html>

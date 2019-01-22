@@ -1,0 +1,12 @@
+
+
+
+//放到head里面
+		<script language="javascript" type="text/javascript" src="<%=request.getContextPath() %>/js/my97/WdatePicker.js"></script>
+
+
+
+
+//标签里面
+		class="Wdate" onClick="WdatePicker()"
+
