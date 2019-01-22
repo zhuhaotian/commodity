@@ -53,4 +53,15 @@
         </set>
         where id=#{id}
     </update>
+
+    <insert id="addfile">
+     INSERT into t_mall_product_image (url)VALUES(#{url})
+    </insert>
+    <!--新增商品-->
+    <insert id="addgood">
+      INSERT into t_mall_product VALUES(#{id},#{shp_mch},#{shp_tp},#{flbh1},#{flbh2},#{pp_id},NOW(),#{shp_msh})
+    </insert>
+
+
+
 </mapper>

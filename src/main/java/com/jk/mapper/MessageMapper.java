@@ -19,4 +19,8 @@ public interface MessageMapper {
     Product selectQueryById(Integer id);
 
     void updeteByEmp(Product product);
+
+    public void addfile(String count);
+
+    public void addgood(Product Product);
 }

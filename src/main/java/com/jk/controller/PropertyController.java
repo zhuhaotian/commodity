@@ -31,11 +31,6 @@ public class PropertyController {
 
       return viewname;
    }
-   @RequestMapping("toIndex")
-   public String toView(){
-
-      return "index";
-   }
    /**
     * 查询属性值
     * @param attribute

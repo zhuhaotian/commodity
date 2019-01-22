@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <!--引入jquery 一定放在第一行  -->
+    <script src="/js/jquery-2.0.3.min.js"></script>
+
+    <!--引入my97  -->
+    <script src="/js/my97/WdatePicker.js"></script>
+
+    <!--引入uploadify的样式 -->
+    <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
+    <script src="/js/uploadify/jquery.uploadify.min.js"></script>
+
+    <!--引入kindedit的样式 -->
+    <link rel="stylesheet" href="/js/kindeditor-4.1.10/themes/default/default.css"/>
+    <script src="/js/kindeditor-4.1.10/kindeditor-all.js"></script>
+
+    <!--引入easyui的样式 -->
+    <link rel="stylesheet" href="/js/easyui/themes/default/easyui.css" type="text/css"></link>
+    <link rel="stylesheet" href="/js/easyui/themes/icon.css" type="text/css"></link>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script src="/json/class_1.js"></script>
+
+    <link rel="stylesheet" href="/js/layui/css/layui.css"/>
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/layui/layui.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</head>
+
+<body>
+<form id="form">
+部门：  <input id="cc"  name="flbh1"  value="请选择">
+       <input id="cc1" name="flbh2" value="请选择">
+       <input id="cc2" name="pp_id" value="请选择">
+<hr/>
+<center>
+<table border="1" cellpadding="1">
+    <tr>
+        <td>商品名称：</td>
+        <td><input type="text" name="shp_mch"><br/></td>
+    </tr>
+    <tr>
+        <td>商品描述：</td>
+        <td><textarea name="shp_msh"></textarea></td>
+    </tr>
+    <tr>
+        <td>商品图片：</td>
+        <td><input name="shp_tp"  id="hideImg" type="text" >
+            <img id="testimg" width="100"> <!-- 上传完显示的图片  -->
+            <div id="fileQueue"></div><!--文件上传的进度条  -->
+            <input id="uploadify" type="file" > <br/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <center>
+            <a id="btn" onclick="add()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">easyui</a>
+            </center>
+        </td>
+    </tr>
+</table>
+</center>
+</form>
+<br/>
+
+
+</body>
+
+<script>
+    $(function(){
+        preFile();
+    })
+$('#cc').combobox({
+        url:'/json/class_1.js',
+        valueField:'id',
+        textField:'flmch1',
+        method:'get',
+        onSelect(record){
+            $('#cc1').combobox({
+                url:'/json/class_2_'+record.id+'.js',
+                valueField:'id',
+                textField:'flmch2',
+                method:'get',
+                onSelect(record){
+                    $('#cc2').combobox({
+                        url:'/json/tm_class_1_'+record.flbh1+'.js',
+                        valueField:'id',
+                        textField:'ppmch',
+                        method:'get',
+                    })
+                }
+            })
+        }
+    });
+
+
+    function preFile(){
+        //上传插件
+        $("#uploadify").uploadify({
+            //插件自带  不可忽略的参数
+            'swf': '/js/uploadify/uploadify.swf',
+            //前台请求后台的url 不可忽略的参数                          //*****要修改路经 !!!!!!!!!!!!!!!!!!!!!!!!
+            'uploader': '/toUploadBlog',
+            //给div的进度条加背景 不可忽略
+            'queueID': 'fileQueue',
+            //上传文件文件名 !!!!!!!!!!!!!!!!!!与后台接口参数名字需要完全一致!!!!!!!!!!!!!!!!!!!!!!!!
+            'fileObjName' : 'file',
+            //给上传按钮设置文字
+            'buttonText': '上传图片',
+            //设置文件是否自动上传
+            'auto': true,
+            //可以同时选择多个文件 默认为true  不可忽略
+            'multi': false,
+            //上传后队列是否消失
+            'removeCompleted': true,
+            //队列消失时间
+            'removeTimeout' : 1,
+            //上传文件的个数，项目中一共可以上传文件的个数
+            'uploadLimit':  -1,
+            'onFallback':function(){alert("浏览器不支持,请更换其他浏览器,或打开Flash插件");},
+            //上传失败
+            'onUploadError':function(){
+                alert("上传失败");
+            },
+            //成功回调函数 file：文件对象。data后台输出数据
+            'onUploadSuccess':function(file,data,response){
+              //  for (data)
+                var imgurl =data
+                alert(data);
+                //给img框赋值进行展示
+                $("#testimg").attr("src",data);
+                //给隐藏的文本框赋值 传到后台
+                $('#hideImg').val(data); //改!!!!!!!!!!11111
+            }
+        });
+    }
+function add(){
+   $.ajax({
+     url:'/addgood',
+     type:"post",
+     data:$("#form").serialize(),
+     success:function(){
+       alert("成功了")
+     },
+     error:function(){
+       layer.msg("失败了");
+     }
+   })
+}
+
+
+
+
+
+</script>
+
+
+</html>

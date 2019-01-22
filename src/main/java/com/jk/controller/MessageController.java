@@ -3,15 +3,18 @@ package com.jk.controller;
 import com.jk.bean.Product;
 import com.jk.service.MessageService;
 import com.jk.utils.FileUtil;
+import com.jk.utils.OssUpFileUtil;
 import com.jk.utils.ResultPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
 public class MessageController {
@@ -77,4 +80,44 @@ public class MessageController {
         messageService.updeteByEmp(product);
         return "1";
     }
+    //新增页面
+    @RequestMapping("goodadd")
+    public String good(){
+
+        return "togood";
+    }
+    @RequestMapping("goodaddtwo")
+    public String goodaddtwo(){
+
+        return "message";
+    }
+    //新增商品
+    @ResponseBody
+    @RequestMapping("addgood")
+    public String addgood(Product Product){
+        System.out.println(Product);
+        messageService.addgood(Product);
+        return "1";
+    }
+    //新增图片
+    @ResponseBody
+    @PostMapping("toUploadBlog")
+    public String toUploadBlog(@RequestParam("file") MultipartFile file){
+        Map<String, Object> stringObjectMap = OssUpFileUtil.uploadFile(file);
+        System.out.println(stringObjectMap);
+        String count = "";
+        for (String key : stringObjectMap.keySet()) {
+            Object o = stringObjectMap.get(key);
+            System.out.println("key: " + key + " value: " + o);
+            if(key=="url"){
+                count+=o;
+                messageService.addfile(count);
+            }
+        }
+        return count;
+    }
+
+
+
+
 }

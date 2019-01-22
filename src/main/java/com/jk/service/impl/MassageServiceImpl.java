@@ -7,12 +7,13 @@ import com.jk.utils.ResultPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class MassageServiceImpl implements MessageService {
-    @Autowired
+    @Resource
     private MessageMapper messageMapper;
 
 
@@ -49,6 +50,21 @@ public class MassageServiceImpl implements MessageService {
     public void updeteByEmp(Product product) {
         messageMapper.updeteByEmp(product);
     }
+
+    @Override
+    public void addfile(String count) {
+
+        messageMapper.addfile(count);
+    }
+    public void addgood(Product Product){
+
+        messageMapper.addgood(Product);
+
+    }
+
+
+
+
 
 
 }
