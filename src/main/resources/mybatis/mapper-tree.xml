@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.TreeMapper">
+
+<select id="findAll" parameterType="com.jk.bean.Tree" resultType="com.jk.bean.Tree">
+    SELECT t.id AS id,t.text AS text,t.href AS href,t.pid AS pid
+		FROM t_tree t
+		WHERE t.pid=#{pid}
+
+</select>
+</mapper>
