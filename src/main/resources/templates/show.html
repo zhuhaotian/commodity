@@ -62,13 +62,17 @@
                             {
                                 iconCls:'icon-mini-refresh',
                                 handler:function(){
-                                    var selectTab = $('#tt').tabs('getSelected');
-                                    $('#tt').tabs('update',{
-                                        tab:selectTab,
-                                        options:{
-                                            content:createFrame(node.href)
-                                        }
-                                    });
+                                    console.log("-----------"+node)
+
+                                       var selectTab = $('#tt').tabs('getSelected');
+                                      if(node.href !=null) {
+                                          $('#tt').tabs('update', {
+                                              tab: selectTab,
+                                              options: {
+                                                  content: createFrame(node.href)
+                                              }
+                                          });
+                                      }
                                 }
                             }
                         ]
