@@ -43,7 +43,7 @@ public class PropertyServiceImpl implements PropertyService {
             shxm_id=mapper.getArrrId(arr.getShxm_mch());
             if(shxm_id==null){
                 mapper.addMallAttr(arr.getShxm_mch());
-                shxm_id=arr.getId();
+                shxm_id=mapper.getArrrId(arr.getShxm_mch());
                 System.out.println(shxm_id);
             }
         }
