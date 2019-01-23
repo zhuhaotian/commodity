@@ -68,9 +68,12 @@ public class StockServiceImpl implements StockService{
         stockMapper.addSku(copySku);
         List<SkuAttrValue> skuAttrVal = copySku.getAttrVal();
         for (SkuAttrValue skuAttrValue : skuAttrVal) {
-            skuAttrValue.setShpId(copySku.getShp_id());
-            skuAttrValue.setSkuId(copySku.getId());
-            stockMapper.addStuAttrValue(skuAttrValue);
+            if(skuAttrValue !=null){
+                skuAttrValue.setShpId(copySku.getShp_id());
+                skuAttrValue.setSkuId(copySku.getId());
+                stockMapper.addStuAttrValue(skuAttrValue);
+            }
+
         }
 
     }

@@ -24,9 +24,13 @@
     <script src="/json/class_1.js"></script>
 
     <link rel="stylesheet" href="/js/layui/css/layui.css"/>
-    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+
     <script type="text/javascript" src="/js/layui/layui.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/js/layer/theme/default/layer.css">
+
+
 </head>
 
 <body>
@@ -57,7 +61,7 @@
     <tr>
         <td colspan="2">
             <center>
-            <a id="btn" onclick="add()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">easyui</a>
+            <a id="btn" onclick="add()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">新增</a>
             </center>
         </td>
     </tr>
@@ -151,7 +155,8 @@ function add(){
      type:"post",
      data:$("#form").serialize(),
      success:function(){
-       alert("成功了")
+         layer.msg("成功了")
+         location.href="/empQuery";
      },
      error:function(){
        layer.msg("失败了");
