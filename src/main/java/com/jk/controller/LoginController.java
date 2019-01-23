@@ -13,8 +13,10 @@ package com.jk.controller;
 import com.jk.bean.User;
 import com.jk.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -24,13 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @create 2019/1/21
  * @since 1.0.0
  */
-@RestController
+@Controller
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
     @RequestMapping("Login")
+    @ResponseBody
     public String LoginUserByYhMchByYhMm(User user){
         User user1 = loginService.LoginUserByYhMchByYhMm(user);
         if (user1 != null) {
@@ -40,5 +43,11 @@ public class LoginController {
         return "0";
     }
 
+    @RequestMapping("queryloginuser")
+    @ResponseBody
+    public User queryloginuser(@RequestBody User user){
+        User user1 = loginService.LoginUserByYhMchByYhMm(user);
+        return user1;
+    }
 
 }
