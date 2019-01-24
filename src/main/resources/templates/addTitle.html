@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/easyui/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/js/easyui/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui/themes/default/easyui.css">
+</head>
+<script type="text/javascript">
+    $(function(){
+        addTitle();
+
+    })
+
+    function addTitle(){
+        $("#form").form({
+            url:"/tit/addTitle",
+            onSubmit:function(){
+            },
+            success: function(){
+                $("#dd11").dialog("close");
+                $("#dg").datagrid("reload");
+            }
+        });
+    }
+  function submiteAdd() {
+    $("#form").form("submit")
+  }
+</script>
+<body>
+<div id="dd11" class="easyui-dialog" title="新增商品展示标题" style="width:500px;height:400px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,
+        buttons:[{
+				text:'保存',
+				iconCls:'icon-save',
+				handler:function(){
+
+				 submiteAdd();
+
+				}
+			},{
+				text:'关闭',
+				iconCls:'icon-cancel',
+				handler:function(){
+				  $('#dd11').dialog('close')
+				}
+			}]">
+    <form id="form">
+        <input type="hidden" name="id" th:value="${id}">
+        标题名:<input class="easyui-validatebox" name="text" th:value="${text}"/><br>
+
+        路径:<input class="easyui-validatebox" name="href" th:value="${href}"/>
+
+    </form>
+
+</div>
+</body>
+</html>

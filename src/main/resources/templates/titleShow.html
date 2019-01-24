@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/easyui/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/js/easyui/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui/themes/default/easyui.css">
+</head>
+
+<script type="text/javascript">
+    $(function () {
+        getEmpl();
+    })
+    function getEmpl(){
+        $('#dg').datagrid({
+            url:'/tit/getTitle',
+            toolbar: '#pgg',
+            pagination:true,
+            pageList:[1,2,3,4,5,6],
+            pageSize:6,
+            rowStyler: function(index,row){
+                if (index%2 ==0){
+                    return 'background-color:#6293BB;color:pink;';
+                }
+            },
+            loadMsg:'正在加载,别着急',
+            columns:[
+                [
+                {field:'xxx',title:'id',width:100,checkbox:true},
+                {field:'id',title:'id',width:100},
+                {field:'text',title:'标题名',width:100},
+                {field:'href',title:'路径',width:100,align:'right'},
+                {field:'xx2',title:'操作',width:100,align:'right',
+                    formatter: function(value,row,index){
+                        //var count="<a href='javascript:void(0)' onclick=updateItem("+row.id+")> 修改</a>";
+                        var count="<a href='/tit/getTitleById?id="+row.id+"'> 修改</a>";
+                        count+="|<a href='javascript:void(0)' onclick=deleteById("+row.id+",'"+row.text+"')>删除</a>";
+                        return count;
+                    }
+                } ,
+            ]
+            ]
+        });
+    }
+    function deleteById(id,name){
+        $.messager.confirm('确认','您确认想要删除'+name+'这条记录吗？',function(r){
+            if (r){
+                deleteBooks(id);
+            }
+        });
+    }
+
+    function deleteBooks(id){
+        $.ajax({
+            url:"/tit/deleteTiTById",
+            type:"POST",
+            data:{id:id},
+            success:function(result){
+                $("#dg").datagrid('reload');
+                $.messager.show({
+                    title:'消息',
+                    msg:'删除成功!!',
+                    timeout:5000,
+                    showType:'slide'
+                });
+
+            },
+            error:function(){
+                alert("ajax访问失败了,查看控制台");
+            }
+        });
+    }
+</script>
+<body>
+<div id="pgg">
+    <a id="btn" href="/tit/toAdd" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+</div>
+<table id="dg" fit=true></table>
+</body>
+</html>
