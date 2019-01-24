@@ -32,6 +32,9 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    /**
+     *    验证用户名  密码是否一致
+     */
     @RequestMapping("Login")
     @ResponseBody
     public String LoginUserByYhMchByYhMm(User user){

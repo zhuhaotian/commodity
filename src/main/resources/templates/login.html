@@ -1,91 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <title>欢迎！！！</title>
-
-    <link rel="stylesheet" type="text/css" href="/login/css/login.css"/>
-    <link rel="shortcut icon" type="image/icon" href="/login/images/jd.ico"/>
-    <script src="/login/js/jquery-2.1.1.min.js"></script>
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Insert title here</title>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/js/loginAngRegister/css/base.css"/>
+    <link rel="stylesheet" href="/js/loginAngRegister/css/login.css"/>
+    <link rel="stylesheet" href="/js/layer/theme/default/layer.css"/>
 </head>
 <body>
-<div class="up">
-    <img src="/login/images/logo.jpg" height="45px;" class="hy_img"/>
-    <div class="hy">
-        欢迎登录
-    </div>
-</div>
-<div class="middle">
-    <div class="login">
-        <div class="l1 ">
-            <div class="l1_font_01 ">硅谷会员</div>
-            <a class="l1_font_02 " href="*">用户注册</a>
-        </div>
-        <div class="blank_01"></div>
-        <div class="ts">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${err}
-        </div>
-        <div class="blank_01"></div>
-        <form action="login.action" id="login_form" method="post">
-            <div class="input1">
-                <input type="text" class="input1_01" name="yhMch"/>
+<div id="main">
+    <div class="container">
+        <div class="bgPic"><img src="/js/loginAngRegister/img/register/b3_1.jpg" alt=""/></div>
+        <div class="register">
+            <div class="title">
+                <span>登录</span>
+                <a href="register.html">去注册</a>
             </div>
-            <div class="blank_01"></div>
-            <div class="blank_01"></div>
-            <div class="input2">
-                <input type="text" class="input1_01" name="yhMm"/>
-            </div>
-        </form>
-        <div class="blank_01"></div>
-        <div class="blank_01"></div>
-        <div class="box_01">
-            <input type="checkbox" name="remember" class="box_01_box"/>
-            <div class="box_01_both">
-                <div class="box_01_both_1">自动登陆</div>
-                <div class="box_01_both_2">忘记密码？</div>
-            </div>
-        </div>
-        <div class="blank_01"></div>
-        <a href="#" class="aline">
-            <div class="red_button" onclick="sublogin()">
-                登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
-            </div>
-        </a>
-        <div class="blank_01"></div>
-        <div class="blank_01"></div>
-        <div class="box_down">
-            <div class="box_down_1">使用合作网站账号登录京东：</div>
-            <div class="box_down_1">京东钱包&nbsp;&nbsp;|&nbsp;&nbsp;QQ
-                &nbsp;&nbsp;|&nbsp;&nbsp;微信
+            <form autocomplete="off" id="form">
+                <div class="default">
+                    <p>请输入用户名或手机号码</p>
+                    <input id="uname" name="yhMch" data-form="uname" type="text" placeholder="用户名/手机"/>
+                </div>
+                <div class="default">
+                    <p>请输入账号密码</p>
+                    <input id="upwd" name="yhMm" data-form="upwd" type="password" placeholder="密码"/>
+                </div>
+                <div class="submit">
+                        <div class="notice">
+                            <input type="checkbox" class="box_01_box" name="rememberPwd" th:checked="${userPwd}==null?'false':'checked'">
+                            <div class="box_01_both_1">记住密码</div>
+                            <a href="#">忘记密码</a>
+                        </div>
+                    <input type="button" class="s_hover" value="登录" onclick="submitForm()">
+                </div>
+            </form>
+            <div class="other_login">
+                <div class="log">
+                    <span>社交账号登录</span>
+                </div>
+                <div class="icon">
+                    <ul>
+                        <li data-log="icon" class="i_hover">
+                            <img data-icon="wx" src="/js/loginAngRegister/img/register/wx.png" alt=""/>
+                            <span class="prompt" >微信登录</span>
+                        </li>
+                        <li data-log="icon" class="i_hover">
+                            <img data-icon="qq" src="/js/loginAngRegister/img/register/qq.png" alt=""/>
+                            <span class="prompt" >QQ登录</span>
+                        </li>
+                        <li data-log="icon" class="i_hover">
+                            <img data-icon="wb" src="/js/loginAngRegister/img/register/wb.png" alt=""/>
+                            <span class="prompt" >微博登录</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+    <div id="footer">
+    </div>
 </div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/login.js"></script>
+<script src="/js/layer/layer.js"></script>
 
-<div class="down">
-    <br />
-    Copyright©2004-2015  xu.jb.com 版权所有
-</div>
-</body>
 <script type="text/javascript">
-    function sublogin(){
-        $.ajax({
-            url:'/Login',
-            type:'post',
-            data:$('#login_form').serialize(),
-            success:function (data) {
-                if (data == 1) {
-                    location.href="/queryUserListHtml";
-                } else {
-                    alert("账号或密码不正确！！！");
-                }
-            },
-            error:function () {
-                alert("账号或密码不正确！！！");
-            }
 
+    function submitForm(){
+
+        $.ajax({
+
+            url:"/Login",
+            type:"post",
+            data:$("#form").serialize(),
+
+            success:function(result){
+
+                if(result==1){
+                    location.href="/queryUserListHtml";
+                }else{
+
+                    layer.msg("用户名或密码错误!!!!")
+                }
+            }
         })
     }
+
+
+
+
 </script>
+</body>
 </html>
