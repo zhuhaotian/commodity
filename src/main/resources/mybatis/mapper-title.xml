@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.TitleMapper">
+    <!--getTitle-->
+    <select id="getTitle" resultType="title">
+        select * from t_mall_title
+    </select>
+    <!--void addTitle(Title title);-->
+    <insert id="addTitle">
+        insert into t_mall_title (text,href)value (#{text},#{href})
+    </insert>
+    <!--void deleteById();-->
+    <delete id="deleteById">
+        delete from t_mall_title where id in (${id})
+    </delete>
+    <!--Title getTitleById(String id);-->
+    <select id="getTitleById" resultType="title">
+      select * from t_mall_title where id =#{id}
+    </select>
+    <!--  void updateById(Title title);-->
+    <update id="updateById">
+        update t_mall_title set text=#{text},href=#{href} where id =#{id}
+    </update>
+</mapper>

@@ -1,5 +1,9 @@
 package com.jk.utils;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 /**
@@ -7,6 +11,9 @@ import java.util.List;
  *
  * @author songxj
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResultPage {
 
     private Integer total = 0;
@@ -27,5 +34,8 @@ public class ResultPage {
 
     public void setRows(List<?> rows) {
         this.rows = rows;
+
     }
+
+
 }
