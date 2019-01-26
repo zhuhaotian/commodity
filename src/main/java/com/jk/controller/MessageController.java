@@ -2,9 +2,7 @@ package com.jk.controller;
 
 import com.jk.bean.Product;
 import com.jk.service.MessageService;
-import com.jk.utils.FileUtil;
-import com.jk.utils.OssUpFileUtil;
-import com.jk.utils.ResultPage;
+import com.jk.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -119,6 +118,32 @@ public class MessageController {
     }
 
 
-
+    //poi导出
+    @ResponseBody
+    @RequestMapping("save")
+    public String save(@RequestParam("id[]") String[] id) throws Exception{
+        String sheetName="商品列表";
+        String titleName="我的列表";
+        String[] headers = { "商品ID", "商品名称", "商品图片", "分类编号1" ,"分类编号2","品牌id","创建时间","商品描述"};
+        List<Product> dataSet = messageService.selectBookList(id);
+        String resultUrl="E:\\googds.xls";
+        String pattern="yyyy-MM-dd";
+        ExportExcel.exportExcel(sheetName, titleName, headers, dataSet, resultUrl, pattern);
+        return "success";
+    }
+    //poi导入
+    @ResponseBody
+    @RequestMapping("importExcel")
+    public String importExcel() throws Exception{
+        String originUrl="E:\\googds.xls";
+        int startRow=2;
+        int endRow=0;
+        List<Product> bookList = (List<Product>) importExcel.importExcel(originUrl, startRow, endRow, Product.class);
+        for (Product book : bookList) {
+            book.setId(null);
+            messageService.insertBook(book);
+        }
+        return "1";
+    }
 
 }
