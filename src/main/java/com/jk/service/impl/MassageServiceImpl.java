@@ -61,10 +61,16 @@ public class MassageServiceImpl implements MessageService {
         messageMapper.addgood(Product);
 
     }
-
-
-
-
+    //poi导出
+    @Override
+    public List<Product> selectBookList(String[] id) {
+        return messageMapper.selectBookList(id);
+    }
+    //poi导入
+    @Override
+    public void insertBook(Product book) {
+        messageMapper.insertBook(book);
+    }
 
 
 }

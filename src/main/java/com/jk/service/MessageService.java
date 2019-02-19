@@ -3,6 +3,8 @@ package com.jk.service;
 import com.jk.bean.Product;
 import com.jk.utils.ResultPage;
 
+import java.util.List;
+
 public interface MessageService {
 
 
@@ -20,4 +22,8 @@ public interface MessageService {
     public void addfile(String count);
 
     public void addgood(Product Product);
+    //poi导出
+    List<Product> selectBookList(String[] id);
+    //poi导入
+    void insertBook(Product book);
 }

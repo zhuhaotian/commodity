@@ -23,4 +23,8 @@ public interface MessageMapper {
     public void addfile(String count);
 
     public void addgood(Product Product);
+
+    List<Product> selectBookList(String[] id);
+
+    void insertBook(Product book);
 }

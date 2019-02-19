@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>线型图</title>
+    <script src="/echarts/jquery-1.9.1.min.js"></script>
+    <script src="/echarts/echarts.min.js"></script>
+</head>
+<body style="width: 1600px;height: 1000px">
+    <div id="container" style="height: 100%"></div>
+</body>
+<script>
+    $(function(){
+        picAjax();
+    })
+    function picAjax(){
+        $.ajax({
+            url:"/histogram",
+            type:"post",
+            cache:false,
+            success:function(data){
+                myChart.setOption({
+                    xAxis: {data: data.sku_mch},
+                    series: {data: data.kc}
+                })
+            }
+        })
+    }
+
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+
+    option = null;
+    option = {
+        title: {
+            text: '商品库存量'
+        },
+        xAxis: {
+            type: 'category',
+            data: []
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [],
+            type: 'line'
+        }]
+    };
+    ;
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+</script>
+</html>
