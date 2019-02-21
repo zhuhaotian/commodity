@@ -63,7 +63,7 @@ public class MassageServiceImpl implements MessageService {
     }
     //poi导出
     @Override
-    public List<Product> selectBookList(String[] id) {
+    public List<Product> selectBookList(String id) {
         return messageMapper.selectBookList(id);
     }
     //poi导入

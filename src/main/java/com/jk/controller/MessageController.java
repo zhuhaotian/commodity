@@ -4,14 +4,17 @@ import com.jk.bean.Product;
 import com.jk.service.MessageService;
 import com.jk.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class MessageController {
@@ -120,29 +123,26 @@ public class MessageController {
     //poi导出   成excel
     @ResponseBody
     @RequestMapping("save")
-    public String save(@RequestParam("id[]") String[] id, HttpServletResponse response,HttpServletRequest request) throws Exception{
-
-
-        String sheetName="商品列表";
-        String titleName="我的列表";
-        String[] headers = { "商品ID", "商品名称", "商品图片", "分类编号1" ,"分类编号2","品牌id","创建时间","商品描述"};
+    public ResponseEntity<byte[]> save(String id) throws Exception {
+        String sheetName = "商品列表";
+        String titleName = "我的列表";
+        String[] headers = {"商品ID", "商品名称", "商品图片", "分类编号1", "分类编号2", "品牌id", "创建时间", "商品描述"};
         List<Product> dataSet = messageService.selectBookList(id);
-        /*生成桌面路径*//*
-        FileSystemView fsv = FileSystemView.getFileSystemView();
-        File com = fsv.getHomeDirectory();
+        String replace = UUID.randomUUID().toString().replace("-", "");
 
-        *//*时间戳*//*
-        SimpleDateFormat sb = new SimpleDateFormat("yyyy-MM-ddHHmmss");
-        format = sb.format(new Date());
+        String fileDir = "E:\\poi\\";
 
-        resultUrl = com + "\\" + format + ".xls";*/
-
-        response.setContentType("application/octet-stream");
-        response.addHeader("Content-Disposition", "attachment;filename=" + resultUrl);
+        File file = new File(fileDir);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String randomPath = fileDir + replace+".xls";
 
         String pattern = "yyyy-MM-dd";
-        ExportExcel.exportExcel(sheetName, titleName, headers, dataSet, resultUrl, pattern);
-        return "success";
+        ExportExcel.exportExcel(sheetName, titleName, headers, dataSet, randomPath, pattern);
+
+        return FileUtil.FileDownload(randomPath,"fileName.xls");
+
     }
 
     //poi导入

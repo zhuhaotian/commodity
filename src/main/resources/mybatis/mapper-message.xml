@@ -65,10 +65,10 @@
 
     <!-- poi批量导出excel文件测试查询student -->
     <select id="selectBookList" resultType="Product">
-        select * from t_mall_product where id in
-        <foreach collection="array" item="id" open="(" close=")" index="index" separator=",">
+        select * from t_mall_product where id in (${_parameter})
+       <!-- <foreach collection="array" item="id" open="(" close=")" index="index" separator=",">
             #{id}
-        </foreach>
+        </foreach>-->
     </select>
     <!--poi导入-->
     <insert id="insertBook" parameterType="Product">

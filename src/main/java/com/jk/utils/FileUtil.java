@@ -1,6 +1,8 @@
 package com.jk.utils;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,27 +63,34 @@ public class FileUtil {
 		savePath = url + "/" + newFileName;
 		return savePath;
 	}
-	
+
 	/**
 	 * 文件下载方法
-	 * @param fileName 文件名称
-	 * @param request request对象
+	 * @param filePath 文件路径
 	 * @return
 	 */
-	public static ResponseEntity<byte[]> FileDownload(String fileName, HttpServletRequest request){
+	public static ResponseEntity<byte[]> FileDownload(String filePath, String fileName){
 
 		ResponseEntity<byte[]> entity = null;
-		
+
 		//获取源文件地址
-		String sourceUrl = request.getSession().getServletContext().getRealPath(fileName);
-		
+
 		//获取源文件
-		File sourceFile = new File(sourceUrl);
-		
+		File sourceFile = new File(filePath);
+
 		//设置头部信息（文件信息包括文件名称和下载文件类型）
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentDispositionFormData("attachment", fileName.substring(7));
+		headers.setContentDispositionFormData("attachment", fileName);
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+		//文件下载
+		try {
+			entity = new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(sourceFile), headers, HttpStatus.CREATED);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return entity;
 	}
 

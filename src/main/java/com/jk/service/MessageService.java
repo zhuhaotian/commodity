@@ -23,7 +23,7 @@ public interface MessageService {
 
     public void addgood(Product Product);
     //poi导出
-    List<Product> selectBookList(String[] id);
+    List<Product> selectBookList(String id);
     //poi导入
     void insertBook(Product book);
 }
