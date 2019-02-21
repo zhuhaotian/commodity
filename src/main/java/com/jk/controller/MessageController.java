@@ -18,7 +18,7 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
-    //跳转页面
+    //跳转页面123
     @RequestMapping("toMessage")
     public String toMassage(){
 
