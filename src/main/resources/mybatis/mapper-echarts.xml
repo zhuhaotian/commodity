@@ -4,4 +4,9 @@
     <select id="histogram" resultType="CopySku">
         select kc,sku_mch from t_mall_sku group by sku_mch
     </select>
+
+    <select id="queryEcharts" resultType="map">
+        SELECT
+            select kc,sku_mch from t_mall_sku group by sku_mch
+	</select>
 </mapper>

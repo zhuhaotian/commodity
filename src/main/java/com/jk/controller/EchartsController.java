@@ -30,6 +30,12 @@ public class EchartsController {
         return "echartsLineChart";
     }
 
+    @RequestMapping("ToPie")
+    public String ToPie(){
+
+        return "echartsPieChart";
+    }
+
     @RequestMapping("histogram")
     @ResponseBody
     public Map<String, Object> histogram(){
@@ -45,5 +51,11 @@ public class EchartsController {
         params.put("kc",b);
         System.out.println("=================>"+params);
         return params;
+    }
+
+    @RequestMapping("queryEcharts")
+    @ResponseBody
+    public List<Map<String,Object>> queryEcharts(){
+        return echartsService.queryEcharts();
     }
 }
