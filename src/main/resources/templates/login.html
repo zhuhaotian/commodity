@@ -28,11 +28,12 @@
                     <input id="upwd" name="yhMm" data-form="upwd" type="password" placeholder="密码"/>
                 </div>
                 <div class="submit">
-                        <div class="notice">
-                            <input type="checkbox" class="box_01_box" name="rememberPwd" th:checked="${userPwd}==null?'false':'checked'">
-                            <div class="box_01_both_1">记住密码</div>
-                            <a href="#">忘记密码</a>
-                        </div>
+                    <div class="notice">
+                        <div class="box_01_both_1">
+                            <input type="checkbox" class="box_01_box" name="rememberPwd" th:checked="${userPwd}==null?'false':'checked'">记住密码 &nbsp;
+                            <!--<input type="checkbox" id="loginCheckedId" class="box_01_box" onchange="autoMaster()">自动登录-->
+                     </div>
+                    </div>
                     <input type="button" class="s_hover" value="登录" onclick="submitForm()">
                 </div>
             </form>

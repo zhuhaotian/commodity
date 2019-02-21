@@ -5,13 +5,11 @@ import com.jk.service.MessageService;
 import com.jk.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -117,33 +115,56 @@ public class MessageController {
         return count;
     }
 
-
-    //poi导出
+    String format = "";
+    String resultUrl ="";
+    //poi导出   成excel
     @ResponseBody
     @RequestMapping("save")
-    public String save(@RequestParam("id[]") String[] id) throws Exception{
+    public String save(@RequestParam("id[]") String[] id, HttpServletResponse response,HttpServletRequest request) throws Exception{
+
+
         String sheetName="商品列表";
         String titleName="我的列表";
         String[] headers = { "商品ID", "商品名称", "商品图片", "分类编号1" ,"分类编号2","品牌id","创建时间","商品描述"};
         List<Product> dataSet = messageService.selectBookList(id);
-        String resultUrl="E:\\googds.xls";
-        String pattern="yyyy-MM-dd";
+        /*生成桌面路径*//*
+        FileSystemView fsv = FileSystemView.getFileSystemView();
+        File com = fsv.getHomeDirectory();
+
+        *//*时间戳*//*
+        SimpleDateFormat sb = new SimpleDateFormat("yyyy-MM-ddHHmmss");
+        format = sb.format(new Date());
+
+        resultUrl = com + "\\" + format + ".xls";*/
+
+        response.setContentType("application/octet-stream");
+        response.addHeader("Content-Disposition", "attachment;filename=" + resultUrl);
+
+        String pattern = "yyyy-MM-dd";
         ExportExcel.exportExcel(sheetName, titleName, headers, dataSet, resultUrl, pattern);
         return "success";
     }
+
     //poi导入
     @ResponseBody
     @RequestMapping("importExcel")
-    public String importExcel() throws Exception{
-        String originUrl="E:\\googds.xls";
-        int startRow=2;
-        int endRow=0;
-        List<Product> bookList = (List<Product>) importExcel.importExcel(originUrl, startRow, endRow, Product.class);
+    public String importExcel(MultipartFile file) throws Exception{
+    String filePath = file.getOriginalFilename();
+    // System.out.println(filePath);
+    String path = filePath.substring(filePath.lastIndexOf("."));
+        if (path.equals(".xls")) {
+        int startRow = 2;//从表格的哪一行开始读取
+        int endRow = 0;
+        List<Product> bookList = (List<Product>) ImportExcel.importExcel(file.getInputStream(), startRow, endRow, Product.class);
         for (Product book : bookList) {
             book.setId(null);
             messageService.insertBook(book);
         }
-        return "1";
+        return "1";//成功
+    } else {
+        return "0";
     }
+  }
+
 
 }

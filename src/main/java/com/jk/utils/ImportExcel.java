@@ -5,9 +5,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,28 +22,23 @@ public class ImportExcel {
     //正则表达式 用于匹配属性的第一个字母
     private static final String REGEX = "[a-zA-Z]";
 
-    public static List<?> importExcel(String originUrl, int startRow, int endRow, Class<?> clazz) throws IOException {
+    public static List<?> importExcel(InputStream fin, int startRow, int endRow, Class<?> clazz) throws IOException {
         //是否打印提示信息
         boolean showInfo=true;
-        return doImportExcel(originUrl,startRow,endRow,showInfo,clazz);
+        return doImportExcel(fin,startRow,endRow,showInfo,clazz);
     }
 
     /**
      * 功能:真正实现导入
      */
-    private static List<Object> doImportExcel(String originUrl,int startRow,int endRow,boolean showInfo,Class<?> clazz) throws IOException {
-        // 判断文件是否存在
-        File file = new File(originUrl);
-        if (!file.exists()) {
-            throw new IOException("文件名为" + file.getName() + "Excel文件不存在！");
-        }
+    private static List<Object> doImportExcel(InputStream fin,int startRow,int endRow,boolean showInfo,Class<?> clazz) throws IOException {
+
         HSSFWorkbook wb = null;
         FileInputStream fis=null;
         List<Row> rowList = new ArrayList<Row>();
         try {
-            fis = new FileInputStream(file);
             // 去读Excel
-            wb = new HSSFWorkbook(fis);
+            wb = new HSSFWorkbook(fin);
             Sheet sheet = wb.getSheetAt(0);
             // 获取最后行号
             int lastRowNum = sheet.getLastRowNum();
