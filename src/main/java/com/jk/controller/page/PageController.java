@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PageController {
 
     @RequestMapping("tologin")
-    String tologin(){
+    public String tologin(){
 
         return "login";
     }
