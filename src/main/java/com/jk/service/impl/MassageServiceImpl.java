@@ -4,7 +4,6 @@ import com.jk.bean.Product;
 import com.jk.mapper.MessageMapper;
 import com.jk.service.MessageService;
 import com.jk.utils.ResultPage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -66,6 +65,7 @@ public class MassageServiceImpl implements MessageService {
     public List<Product> selectBookList(String id) {
         return messageMapper.selectBookList(id);
     }
+
     //poi导入
     @Override
     public void insertBook(Product book) {

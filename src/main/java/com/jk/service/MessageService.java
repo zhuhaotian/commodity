@@ -2,6 +2,7 @@ package com.jk.service;
 
 import com.jk.bean.Product;
 import com.jk.utils.ResultPage;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 
@@ -23,7 +24,9 @@ public interface MessageService {
 
     public void addgood(Product Product);
     //poi导出
+    @Async
     List<Product> selectBookList(String id);
     //poi导入
+    @Async
     void insertBook(Product book);
 }
