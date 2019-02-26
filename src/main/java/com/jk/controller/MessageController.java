@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
-public class MessageController {
+public class MessageController extends Thread{
 
     @Autowired
     private MessageService messageService;

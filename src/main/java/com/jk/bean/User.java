@@ -13,12 +13,11 @@ public class User implements Serializable {
 
     private String yhNch;
 
-
     private String yhMm;
 
     private String yhXm;
 
-    private String yhShjh;
+    private String yhShjh;   //手机号
 
     private String yhYx;
 
@@ -27,6 +26,10 @@ public class User implements Serializable {
     private Integer yhJb;  //
 
     private String rememberPwd;  //记住密码
+
+    private Integer state;   //是否在黑名单
+
+    private String  to;
 
 
 }

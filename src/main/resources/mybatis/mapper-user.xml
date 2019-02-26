@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jk.mapper.LoginMapper">
     <select id="LoginUserByYhMchByYhMm" resultType="com.jk.bean.User">
-      select yh_mch yhMch,yh_mm yhMm from t_mall_user_account where yh_mch = #{yhMch} and yh_mm = #{yhMm}
+      select id,yh_mch yhMch,yh_mm yhMm from t_mall_user_account where yh_mch = #{yhMch} and yh_mm = #{yhMm}
   </select>
 
 </mapper>
